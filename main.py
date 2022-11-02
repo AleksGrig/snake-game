@@ -32,6 +32,9 @@ class Food:
     canvas.create_oval(x, y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOR, tags="food")
 
 def next_turn(snake, food):
+  if space:
+    window.wait_variable(pause)
+    
   x, y = snake.coordinates[0]
 
   if direction == 'up':
@@ -58,6 +61,7 @@ def next_turn(snake, food):
     canvas.delete(snake.squares[-1])
     del snake.squares[-1]
 
+
   if check_collisions(snake):
     game_over()
   else:
@@ -66,18 +70,19 @@ def next_turn(snake, food):
 def change_direction(new_direction):
   global direction
 
-  if new_direction == 'left':
-    if direction != 'right':
-      direction = new_direction
-  elif new_direction == 'right':
-    if direction != 'left':
-      direction = new_direction
-  elif new_direction == 'up':
-    if direction != 'down':
-      direction = new_direction
-  elif new_direction == 'down':
-    if direction != 'up':
-      direction = new_direction
+  if not space:
+    if new_direction == 'left':
+      if direction != 'right':
+        direction = new_direction
+    elif new_direction == 'right':
+      if direction != 'left':
+        direction = new_direction
+    elif new_direction == 'up':
+      if direction != 'down':
+        direction = new_direction
+    elif new_direction == 'down':
+      if direction != 'up':
+        direction = new_direction
 
 def check_collisions(snake):
   x, y = snake.coordinates[0]
@@ -98,10 +103,21 @@ def game_over():
   canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2, 
                      font=('consolas',70), text="GAME OVER", fill="red", tags="gameover")
 
+def space_pressed():
+  global space
+  if space:
+    space = False
+  else:
+    space = True
+  if not space:
+    pause.set(pause.get()+1)
+
 window = tkinter.Tk()
 window.title("Snake game")
 window.resizable(False, False)
 
+space = False
+pause = tkinter.IntVar()
 score = 0
 direction = 'down'
 label = tkinter.Label(window, text="Score:{}".format(score), font=('consolas',40))
@@ -126,6 +142,7 @@ window.bind('<Left>', lambda event: change_direction('left'))
 window.bind('<Right>', lambda event: change_direction('right'))
 window.bind('<Up>', lambda event: change_direction('up'))
 window.bind('<Down>', lambda event: change_direction('down'))
+window.bind('<space>', lambda event: space_pressed())
 
 snake = Snake()
 food = Food()
