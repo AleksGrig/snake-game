@@ -103,7 +103,7 @@ def game_over():
   canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2, 
                      font=('consolas',70), text="GAME OVER", fill="red", tags="gameover")
 
-def space_pressed():
+def press_space():
   global space
   if space:
     space = False
@@ -142,7 +142,7 @@ window.bind('<Left>', lambda event: change_direction('left'))
 window.bind('<Right>', lambda event: change_direction('right'))
 window.bind('<Up>', lambda event: change_direction('up'))
 window.bind('<Down>', lambda event: change_direction('down'))
-window.bind('<space>', lambda event: space_pressed())
+window.bind('<space>', lambda event: press_space())
 
 snake = Snake()
 food = Food()
