@@ -62,7 +62,7 @@ def next_turn(snake, food):
     del snake.squares[-1]
 
 
-  if check_collisions(snake):
+  if check_collisions(snake) or quit:
     game_over()
   else:
     window.after(SPEED, next_turn, snake, food)
@@ -112,10 +112,16 @@ def press_space():
   if not space:
     pause.set(pause.get()+1)
 
+def press_quit():
+  global quit
+  quit = True
+  game_over()
+
 window = tkinter.Tk()
 window.title("Snake game")
 window.resizable(False, False)
 
+quit = False
 space = False
 pause = tkinter.IntVar()
 score = 0
@@ -143,6 +149,7 @@ window.bind('<Right>', lambda event: change_direction('right'))
 window.bind('<Up>', lambda event: change_direction('up'))
 window.bind('<Down>', lambda event: change_direction('down'))
 window.bind('<space>', lambda event: press_space())
+window.bind('q', lambda event: press_quit())
 
 snake = Snake()
 food = Food()
