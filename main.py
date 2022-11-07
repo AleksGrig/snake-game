@@ -32,6 +32,9 @@ class Food:
     canvas.create_oval(x, y, x+SPACE_SIZE, y+SPACE_SIZE, fill=FOOD_COLOR, tags="food")
 
 def next_turn(snake, food):
+  if space:
+    window.wait_variable(pause)
+    
   x, y = snake.coordinates[0]
 
   if direction == 'up':
@@ -48,8 +51,9 @@ def next_turn(snake, food):
   snake.squares.insert(0, square)
 
   if x == food.coordinates[0] and y == food.coordinates[1]:
-    global score
+    global score, SPEED
     score += 1
+    SPEED -= 1
     label.config(text="Score={}".format(score))
     canvas.delete("food")
     food = Food()
@@ -58,7 +62,8 @@ def next_turn(snake, food):
     canvas.delete(snake.squares[-1])
     del snake.squares[-1]
 
-  if check_collisions(snake):
+
+  if check_collisions(snake) or quit:
     game_over()
   else:
     window.after(SPEED, next_turn, snake, food)
@@ -66,18 +71,19 @@ def next_turn(snake, food):
 def change_direction(new_direction):
   global direction
 
-  if new_direction == 'left':
-    if direction != 'right':
-      direction = new_direction
-  elif new_direction == 'right':
-    if direction != 'left':
-      direction = new_direction
-  elif new_direction == 'up':
-    if direction != 'down':
-      direction = new_direction
-  elif new_direction == 'down':
-    if direction != 'up':
-      direction = new_direction
+  if not space:
+    if new_direction == 'left':
+      if direction != 'right':
+        direction = new_direction
+    elif new_direction == 'right':
+      if direction != 'left':
+        direction = new_direction
+    elif new_direction == 'up':
+      if direction != 'down':
+        direction = new_direction
+    elif new_direction == 'down':
+      if direction != 'up':
+        direction = new_direction
 
 def check_collisions(snake):
   x, y = snake.coordinates[0]
@@ -98,10 +104,27 @@ def game_over():
   canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2, 
                      font=('consolas',70), text="GAME OVER", fill="red", tags="gameover")
 
+def press_space():
+  global space
+  if space:
+    space = False
+  else:
+    space = True
+  if not space:
+    pause.set(pause.get()+1)
+
+def press_quit():
+  global quit
+  quit = True
+  game_over()
+
 window = tkinter.Tk()
 window.title("Snake game")
 window.resizable(False, False)
 
+quit = False
+space = False
+pause = tkinter.IntVar()
 score = 0
 direction = 'down'
 label = tkinter.Label(window, text="Score:{}".format(score), font=('consolas',40))
@@ -126,6 +149,8 @@ window.bind('<Left>', lambda event: change_direction('left'))
 window.bind('<Right>', lambda event: change_direction('right'))
 window.bind('<Up>', lambda event: change_direction('up'))
 window.bind('<Down>', lambda event: change_direction('down'))
+window.bind('<space>', lambda event: press_space())
+window.bind('q', lambda event: press_quit())
 
 snake = Snake()
 food = Food()
