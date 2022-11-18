@@ -43,7 +43,7 @@ class Snake:
       x += 30
 
     self.coordinates.insert(0, (x, y))
-    if self.color == (len(color_list) - 1):
+    if self.color == (len(color_list)):
       self.color = 0
     square = self.canvas.create_rectangle(x, y, x+30, y+30, fill=color_list[self.color])
     self.color += 1
