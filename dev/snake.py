@@ -5,6 +5,7 @@ class Snake:
   def __init__(self, canvas) -> None:
     self.coordinates = [(420, 60), (420, 30), (420, 0)]
     self.squares = []
+    self.speed = 50
     self.direction = 'down'
     self.color = 0
     self.canvas = canvas
@@ -51,6 +52,7 @@ class Snake:
     if x == food.coordinates[0] and y == food.coordinates[1]:
       self.canvas.delete("food")
       food = Food(self.canvas)
+      self.speed -= 1
     else:
       del self.coordinates[-1]
       self.canvas.delete(self.squares[-1])
@@ -59,7 +61,7 @@ class Snake:
     if self.check_collisions():
       self.game_over()
     else:
-      self.canvas.after(50, self.next_turn, food)
+      self.canvas.after(self.speed, self.next_turn, food)
 
   def check_collisions(self):
     x, y = self.coordinates[0]
