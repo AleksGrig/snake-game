@@ -103,7 +103,10 @@ class Snake:
   def game_over(self):
     self.canvas.delete("all")
     self.canvas.create_text(self.canvas.winfo_width()/2, self.canvas.winfo_height()/2, 
-                      font=('consolas',70), text="GAME OVER", fill="red", tags="gameover")
+                            font=('consolas',30), 
+                            text="GAME OVER, YOUR SCORE: {}".format(self.score), 
+                            fill="red", 
+                            tags="gameover")
 
 class Food:
   def __init__(self, canvas) -> None:
