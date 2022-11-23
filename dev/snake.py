@@ -1,11 +1,14 @@
 from colors import color_list
 import random
+import tkinter
 
 class Snake:
   def __init__(self, canvas) -> None:
     self.coordinates = [(420, 60), (420, 30), (420, 0)]
     self.squares = []
     self.speed = 50
+    self.pause = tkinter.BooleanVar()
+    self.pause.set(False)
     self.direction = 'down'
     self.color = 0
     self.canvas = canvas
@@ -31,6 +34,9 @@ class Snake:
         self.direction = new_direction
 
   def next_turn(self, food):
+    if self.pause.get():
+      self.canvas.wait_variable(self.pause)
+
     x, y = self.coordinates[0]
 
     if self.direction == 'up':
@@ -75,6 +81,9 @@ class Snake:
         return True
 
     return False
+
+  def press_space(self):
+    self.pause.set(not self.pause.get())
 
   def game_over(self):
     self.canvas.delete("all")

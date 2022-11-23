@@ -7,7 +7,7 @@ window.title("Snake game")
 window.resizable(False, False)
 canvas = Canvas(window, bg="#000000", height=600, width=900)
 canvas.pack()
-window.update()
+# window.update()
 
 my_snake = Snake(canvas)
 my_snake.draw()
@@ -17,6 +17,7 @@ window.bind('<Left>', lambda event: my_snake.change_direction('left'))
 window.bind('<Right>', lambda event: my_snake.change_direction('right'))
 window.bind('<Up>', lambda event: my_snake.change_direction('up'))
 window.bind('<Down>', lambda event: my_snake.change_direction('down'))
+window.bind('<space>', lambda event: my_snake.press_space())
 
 my_snake.next_turn(food)
 
