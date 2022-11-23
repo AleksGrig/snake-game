@@ -20,18 +20,19 @@ class Snake:
       self.squares.append(square)
 
   def change_direction(self,new_direction):
-    if new_direction == 'left':
-      if self.direction != 'right':
-        self.direction = new_direction
-    elif new_direction == 'right':
-      if self.direction != 'left':
-        self.direction = new_direction
-    elif new_direction == 'up':
-      if self.direction != 'down':
-        self.direction = new_direction
-    elif new_direction == 'down':
-      if self.direction != 'up':
-        self.direction = new_direction
+    if not self.pause.get():
+      if new_direction == 'left':
+        if self.direction != 'right':
+          self.direction = new_direction
+      elif new_direction == 'right':
+        if self.direction != 'left':
+          self.direction = new_direction
+      elif new_direction == 'up':
+        if self.direction != 'down':
+          self.direction = new_direction
+      elif new_direction == 'down':
+        if self.direction != 'up':
+          self.direction = new_direction
 
   def next_turn(self, food):
     if self.pause.get():
