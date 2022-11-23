@@ -12,6 +12,13 @@ class Snake:
     self.direction = 'down'
     self.color = 0
     self.canvas = canvas
+    self.score = 0
+    self.text_id = self.canvas.create_text(20, 20, 
+                                           fill="white",
+                                           font=('Helvetica','20'), 
+                                           text="{}".format(self.score), 
+                                           tags="score")
+
 
   def draw(self):
     for x, y in self.coordinates:
@@ -37,7 +44,7 @@ class Snake:
   def next_turn(self, food):
     if self.pause.get():
       self.canvas.wait_variable(self.pause)
-
+    
     x, y = self.coordinates[0]
 
     if self.direction == 'up':
@@ -57,6 +64,13 @@ class Snake:
     self.squares.insert(0, square)
 
     if x == food.coordinates[0] and y == food.coordinates[1]:
+      self.score += 1
+      self.canvas.delete("score")
+      self.text_id = self.canvas.create_text(20, 20, 
+                                             fill="white",
+                                             font=('Helvetica','20'), 
+                                             text="{}".format(self.score), 
+                                             tags="score")
       self.canvas.delete("food")
       food = Food(self.canvas)
       self.speed -= 1
