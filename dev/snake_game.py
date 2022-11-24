@@ -1,6 +1,10 @@
 from tkinter import *
 from snake import *
 
+def quit(snake):
+  if snake.end:
+    print(snake.score)
+    window.destroy()
 
 window = Tk()
 window.title("Snake game")
@@ -29,6 +33,7 @@ window.bind('<Right>', lambda event: my_snake.change_direction('right'))
 window.bind('<Up>', lambda event: my_snake.change_direction('up'))
 window.bind('<Down>', lambda event: my_snake.change_direction('down'))
 window.bind('<space>', lambda event: my_snake.press_space())
+window.bind('q', lambda event: quit(my_snake))
 
 my_snake.next_turn(food)
 
