@@ -1,24 +1,26 @@
+from tkinter import BooleanVar
 from colors import color_list
-import random
-import tkinter
+from food import Food
 
 class Snake:
   def __init__(self, canvas) -> None:
     self.coordinates = [(420, 60), (420, 30), (420, 0)]
     self.squares = []
     self.speed = 50
-    self.pause = tkinter.BooleanVar()
+    self.pause = BooleanVar()
     self.pause.set(False)
     self.direction = 'down'
     self.color = 0
     self.canvas = canvas
     self.score = 0
     self.end = False
+    self.restart = False
     self.text_id = self.canvas.create_text(20, 20, 
                                            fill="white",
                                            font=('Helvetica','20'), 
                                            text="{}".format(self.score), 
                                            tags="score")
+    self.draw()
 
 
   def draw(self):
@@ -110,14 +112,13 @@ class Snake:
                             tags="gameover")
     self.canvas.create_text(self.canvas.winfo_width()/2, 80, 
                             font=('consolas',20), 
-                            text="Press q to quit".format(self.score), 
+                            text="Press 'q' to quit".format(self.score), 
+                            fill="grey", 
+                            tags="quit")
+    self.canvas.create_text(self.canvas.winfo_width()/2, 120, 
+                            font=('consolas',20), 
+                            text="Press 'r' to restart".format(self.score), 
                             fill="grey", 
                             tags="quit")
     self.end = True
-
-class Food:
-  def __init__(self, canvas) -> None:
-    x = random.randint(0, 900/30-1) * 30
-    y = random.randint(0, 600/30-1) * 30
-    self.coordinates = [x, y]
-    canvas.create_oval(x, y, x+30, y+30, fill="#ff0000", tags="food")
+    self.restart = True
