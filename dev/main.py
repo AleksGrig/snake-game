@@ -1,17 +1,7 @@
 from tkinter import *
 from snake import Snake
-from food import Food
 
 #----------------------------------------------------------------------------------------#
-
-def quit(snake):
-  if snake.end:
-    print(snake.score)
-    window.destroy()
-
-def restart(snake):
-  if snake.restart:
-    new_game()
 
 def new_game():
   canvas.delete("all")
@@ -25,8 +15,16 @@ def new_game():
   window.bind('r', lambda event: restart(my_snake))
 
   my_snake = Snake(canvas)
-  food = Food(canvas)
-  my_snake.next_turn(food)
+  my_snake.next_turn()
+
+def quit(snake):
+  if snake.end:
+    print(snake.score)
+    window.destroy()
+
+def restart(snake):
+  if snake.restart:
+    new_game()
 
 #------------------------------------------------------------------------------------------#
 

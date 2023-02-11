@@ -13,6 +13,7 @@ class Snake:
     self.color = 0
     self.canvas = canvas
     self.score = 0
+    self.food = Food(canvas)
     self.end = False
     self.restart = False
     self.text_id = self.canvas.create_text(20, 20, 
@@ -44,7 +45,7 @@ class Snake:
         if self.direction != 'up':
           self.direction = new_direction
 
-  def next_turn(self, food):
+  def next_turn(self):
     if self.pause.get():
       self.canvas.wait_variable(self.pause)
     
@@ -66,7 +67,7 @@ class Snake:
     self.color += 1
     self.squares.insert(0, square)
 
-    if x == food.coordinates[0] and y == food.coordinates[1]:
+    if x == self.food.coordinates[0] and y == self.food.coordinates[1]:
       self.score += 1
       self.canvas.delete("score")
       self.text_id = self.canvas.create_text(20, 20, 
@@ -75,7 +76,7 @@ class Snake:
                                              text="{}".format(self.score), 
                                              tags="score")
       self.canvas.delete("food")
-      food = Food(self.canvas)
+      self.food = Food(self.canvas)
       self.speed -= 1
     else:
       del self.coordinates[-1]
@@ -85,7 +86,7 @@ class Snake:
     if self.check_collisions():
       self.game_over()
     else:
-      self.canvas.after(self.speed, self.next_turn, food)
+      self.canvas.after(self.speed, self.next_turn)
 
   def check_collisions(self):
     x, y = self.coordinates[0]
