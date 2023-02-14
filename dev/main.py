@@ -5,6 +5,7 @@ from snake import Snake
 
 def new_game():
   canvas.delete("all")
+  my_snake = Snake(canvas)
   
   window.bind('<Left>', lambda event: my_snake.change_direction('left'))
   window.bind('<Right>', lambda event: my_snake.change_direction('right'))
@@ -14,7 +15,6 @@ def new_game():
   window.bind('q', lambda event: quit(my_snake))
   window.bind('r', lambda event: restart(my_snake))
 
-  my_snake = Snake(canvas)
   my_snake.next_turn()
 
 def quit(snake):
